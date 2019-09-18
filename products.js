@@ -7,13 +7,10 @@ var maxPrice = undefined;
 function sortProduct(criteria, array){
     let result = [];
 if (criteria === ORDER_BY_PROD_PRICE){
-        result = array.sort(function(a, b) {
-            let aPrice = parseInt(a.productCost);
-            let bPrice = parseInt(b.productCost);
-
-            if ( aPrice > bPrice ){ return -1; }
-            if ( aPrice < bPrice){ return 1; }
-            return 0;
+    result = array.sort(function(a, b) {
+        if ( a.cost > b.cost ){ return -1; }
+        if ( a.cost < b.cost ){ return 1; }
+        return 0;    
         });
     }
 
@@ -60,7 +57,7 @@ function sortAndShowProducts(sortCriteria, productsArray){
         currentProductsArray = productsArray;
     }
 
-    currentProductsArray = sortCategories(currentSortCriteria, currentProductsArray);
+    currentProductsArray = sortProduct(currentSortCriteria, currentProductsArray);
 
     //Muestro las categorías ordenadas
     showProductsList(currentProductsArray);
@@ -72,7 +69,7 @@ function sortAndShowProducts(sortCriteria, productsArray){
 document.addEventListener("DOMContentLoaded", function(e){
     getJSONData(PRODUCTS_URL).then(function(resultObj)
          { if (resultObj.status === "ok") {
-            showProductsList(resultObj.data);
+            sortAndshowProductsList(resultObj.data);
         }
     });
 document.getElementById("sortByPrice").addEventListener("click", function(){
